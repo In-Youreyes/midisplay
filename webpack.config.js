@@ -105,8 +105,8 @@ const config = {
 			hash: true
 		})
 		// ,new miniCssExtractPlugin({
-  //   	filename: 'css/[name].css'
-  //   })
+  	//   	filename: 'css/[name].css'
+  	//   })
 	],
 	devServer: {
 		watchOptions: { //监听选择
