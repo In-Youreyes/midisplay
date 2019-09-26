@@ -1,0 +1,1 @@
+<img src="{{pic_url}}" class="detail-pic {{isCurrent}}" alt="phone_name"/>

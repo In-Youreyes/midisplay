@@ -1,0 +1,43 @@
+.pic {
+	 position: relative;
+   width: 560px;
+   height: 560px;
+
+   .detail-pic {
+   		position: absolute;
+   		display: none;
+
+   		&.current {
+   			display: block;
+   		}
+   }
+
+   .pic-control {
+			position: absolute;
+			top: 50%;
+			z-index: 1;
+			width: 24px;
+			height: 40px;
+			margin-top: -20px;
+			background-color: rgba(0, 0, 0, 0);
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: 15px 15px;
+			cursor: pointer;
+			transition: background-color .2s;
+
+			&:hover {
+				background-color: rgba(0, 0, 0, .2);
+			}
+
+			&:first-of-type {
+				left: 0;
+				background-image: url(../../../icons/prev.png);
+			}
+
+			&:last-child {
+				right: 0;
+				background-image: url(../../../icons/next.png);
+			}
+		}
+}
