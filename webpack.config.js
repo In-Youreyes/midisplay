@@ -114,7 +114,6 @@ const config = {
   	},
 		host: 'localhost', //主机
 		port: 3400, //端口
-		openPage: '/index.html'
 	}
 }
 
