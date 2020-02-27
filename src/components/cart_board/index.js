@@ -165,7 +165,7 @@ class CartBoard {
 				if (!isSelected) {
 					alert('请选择要结算的产品！');
 					return ;
-				}	else {
+				} else {
 					this.storageToOrder(payGoods, noPayGoods);
 				}
 				break;
