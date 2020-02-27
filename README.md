@@ -21,7 +21,7 @@
           ]
         ]
       }     
-### 2.结构：首页index，搜索列表页list，手机详情页detail
+### 2.结构：首页index，搜索列表页list，手机详情页detail，购物车页cart，订单页order
     组件化在不同地方可以共用一个组件，省略大量代码和时间，头部组件底部组件每个页面都需要，可以一次写完多次复用。
     使用class类定义模块，App为父类，三个页面的模块继承此类。
 #### 2.1首页index.html
@@ -30,6 +30,10 @@
     包括头部组件Header,列表内容ShowBoard，底部组件Footer。
 #### 2.3手机详情页detail.html
     包括头部组件Header，详情页组件DetailBoard，底部组件Footer。
+#### 2.4购物车页cart.html
+    包括头部组件Header，购物列表组件CartBoard，底部组件Footer。
+#### 2.5订单页order.html
+    包括头部组件Header，订单列表组件OrderBoard，底部组件Footer。
 ## 二、数据
 ### 1.数据模型
 #### 1.1请求数据：
@@ -46,6 +50,7 @@
     2.2.2在Header的Search组件中搜索时
     (1)当前页为首页index和详情页detail，则open添加页并跳转。
     (2)当前页为list，则location.href重定向，并删除存储的url，防止自动刷新
+#### 2.3购物操作
+    通过localStorage保存购物车内容和已购订单内容，在购物时添加相关提示信息，使用时间戳加随机6位数生成订单号，在购物车页面点击选择按钮计算总价，分别处理单个结算和选中结算，点击删除时刷新页面，区分保存购物车和已购订单
 ## 三、结尾
     该项目为小米手机官网商品展示，不包括购物，数据库后端内容。
-    原作：js++，地址：http://www.jsplusplus.com
