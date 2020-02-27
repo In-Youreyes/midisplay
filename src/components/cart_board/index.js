@@ -120,18 +120,19 @@ class CartBoard {
 		      cartData = this.cartData;
 
 		let payGoods = this.payGoods,
-		    selectPayGoods = [],
-		    noPayGoods = [];
+		    noPayGoods = [],
+		    isSelected = false;
 
 		cartData.forEach((item, index) => {
 			if (this.$checks[index].checked) {
-				selectPayGoods.push(item);
+				isSelected = true;
+				payGoods.push(item);
 			} else {
 				noPayGoods.push(item);
 			}
 		});
 
-		this.orderGoods(payGoods, selectPayGoods, noPayGoods, 'all');
+		this.orderGoods(payGoods,noPayGoods, isSelected, 'all');
 	}
 
 	//单个结算
@@ -142,25 +143,26 @@ class CartBoard {
 		      cartData = this.cartData;
 
 		let payGoods = this.payGoods,
-		    selectPayGoods = [],
-		    noPayGoods = [];
+		    noPayGoods = [],
+		    isSelected = false;
 
 		cartData.forEach((item, index) => {
 			if (item.orderId === cartid) {
-				selectPayGoods.push(item);
+				isSelected = true;
+				payGoods.push(item);
 			} else {
 				noPayGoods.push(item);
 			}
 		});
 
-		this.orderGoods(payGoods, selectPayGoods, noPayGoods, 'one');
+		this.orderGoods(payGoods, noPayGoods, isSelected, 'one');
 	}
 
 	//生成订单
-	orderGoods (payGoods, selectPayGoods, noPayGoods, type) {
+	orderGoods (payGoods, noPayGoods, isSelected, type) {
 		switch (type) {
 			case 'all': 
-				if (selectPayGoods.length <= 0) {
+				if (!isSelected) {
 					alert('请选择要结算的产品！');
 					return ;
 				}	else {
@@ -168,7 +170,7 @@ class CartBoard {
 				}
 				break;
 			case 'one':
-				if (payGoods) {
+				if (isSelected) {
 					this.storageToOrder(payGoods, noPayGoods);
 				} else {
 					alert('结算失败，请重试！');
