@@ -7,8 +7,9 @@
 	.container {
 		position: relative;
 		width: 1226px;
+    height: 650px;
 		margin: 0 auto;
-		padding: 32px 0 12px;
+		padding: 32px 0;
 
 		.left {
 			width: 606px;
@@ -37,6 +38,25 @@
 
       .content-wrapper {
       	width: 608px;
+        margin-top: 20px;
+      }
+
+      .detail-btn {
+        float: right;
+        width: 150px;
+        height: 40px;
+        margin-left: 30px;
+        line-height: 40px;
+        font-size: 18px;
+        color: #fff;
+
+        &.add-to-cart-btn {
+          background-color: #f20;
+        }
+
+        &.purchase-btn {
+          background-color: #ff6700;
+        }
       }
 		}
 	}

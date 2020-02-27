@@ -21,17 +21,26 @@ class DetailBoard {
 		//颜色版本的DOM
 		this.$version = null;
 		this.$color = null;
+		//购物车DOM
+		this.$addToCart = null;
+		this.$purChase = null;
 
-
+		this.id = '';
 		//颜色和版本的数据
 		this.version = {};
 		this.color = {};
+		this.pics = {};
+		this.name = {};
 		//颜色版本的位置
 		this.curV = 0;
 		this.curC = 0;
 		//当前图片
 		this.picLen = 0;
 		this.picNum = 0;
+
+		//购物车和购买
+		this.cartData = [];
+		this.purchaseData = [];
 	}
 
 	async init () {
@@ -46,21 +55,28 @@ class DetailBoard {
 		      phoneData = this.phoneData,
 		      picData = $.parseJSON(phoneData.pics);
 
+		this.id = phoneData.id;
+
+		this.cartData = JSON.parse(localStorage.getItem('cartData')) || [];
+		this.purchaseData = JSON.parse(localStorage.getItem('purchaseData')) || [];
+
+		this.pics = picData;
+		this.name = phoneData.phone_name;
 		this.version = $.parseJSON(phoneData.version_info); //版本信息
 		this.color = $.parseJSON(phoneData.color); //颜色数据
-	
-		this.picLen = picData[0][0].length;; //每组图片数量
+
+		this.picLen = picData[0][0].length; //每组图片数量
 
 		//插入dom
 		await this.$el.append(tools.tplReplace(tpl(), {
-			detail_pic: detailPic.tpl(phoneData, this.curC),//[0][version][color]
+			detail_pic: detailPic.tpl(picData, this.curC),//[0][version][color]
 			phone_name: phoneData.phone_name,
 			slogan: phoneData.slogan,
 			default_price: phoneData.default_price,
 			title_1: detailTitle.tpl('手机版本'), //参数替换detailTitle中的{{title}}		
-			versions: this.makeList(this.contentItem, this.version, this.color).versionList, //版本信息
+			versions: this.makeList(this.contentItem, this.version, 'version'), //版本信息
 			title_2: detailTitle.tpl('手机颜色'),
-			colors: this.makeList(this.contentItem, this.version, this.color).colorList //颜色信息
+			colors: this.makeList(this.contentItem, this.color, 'color') //颜色信息
 		}));
 	}
 
@@ -69,16 +85,19 @@ class DetailBoard {
 		const $container = $('.detail-board'),
 		      $pic = $container.find('.pic');
 
-    this.$version = $container.find('.content-wrapper:first'),
-    this.$color = $container.find('.content-wrapper:last');
+    this.$version = $container.find('.J_version');
+    this.$color = $container.find('.J_color');
+    this.$cart = $container.find('.J_btnGroup');
 
     //点击图片
     $pic.on('click', { $pic }, $.proxy(this.picClick, this));
 
 		//点击选择版本
-		this.$version.on('click', '.content-item', $.proxy(this.versionClick, this));
+		this.$version.on('click', '.content-item','version', $.proxy(this.changeClick, this));
 		// 点击选择颜色
-		this.$color.on('click', '.content-item', $.proxy(this.colorClick, this));
+		this.$color.on('click', '.content-item', 'color', $.proxy(this.changeClick, this));
+		// 点击加入购物车/点击购买
+		this.$cart.on('click', '.detail-btn', $.proxy(this.cartClick, this));
 	}
 
 	//点击图片
@@ -88,7 +107,7 @@ class DetailBoard {
 		      $tar = $(tar),
 		      dir = $tar.attr('data-dir'), //上下页属性
 		      picItem = e.data.$pic.find('.detail-pic'); //图片组
-
+		      
 		this.changeNum(dir); //更改num
 		this.changePic(picItem, this.picNum); //更换图片
 	}
@@ -118,42 +137,87 @@ class DetailBoard {
 	//切换图片显示
 	changePic (picItem, num) {
 		picItem.eq(num).addClass('current')
-		   .siblings().removeClass('current')
+		   		 .siblings().removeClass('current');
 	}
 
 	//切换版本
-	versionClick (e) {
-		const tar = e.currentTarget,
-		      $tar = $(tar);
-
-		this.curV = $tar.index();
-		this.appendList();
-	}
-
-	//切换颜色
-	colorClick (e) {
-		const tar = e.currentTarget,
+	changeClick (e) {
+		const tar = e.target,
 		      $tar = $(tar),
-		      pic = $();
+		      cur = e.data;
+		
+		switch (cur) {
+			case 'version':
+				this.curV = $tar.index();
+				break;
+			case 'color':
+				this.curC = $tar.index();
+				break;
+		}
 
-		this.curC = $tar.index();
 		this.picNum = 0; //更换了图片，从第一张开始
 		this.appendList();
 	}
 
-	//颜色和版本list
-	makeList (contentItem, version, color) {
-		let versionList = '',
-		    colorList = '';
-		    
-		version.forEach((item, index) => {
-			versionList += contentItem.tpl(item.version, item.price, this.curV, index);
-		});
-		color.forEach((item, index) => {
-			colorList += contentItem.tpl(item, null, this.curC, index);
-		});
+	//添加购物车/购买
+	cartClick (e) {
+		const tar = e.target,
+		      $tar = $(tar),
+		      field = $tar.attr('data-field'),
+		      phone = this.storageCart() || {};
 
-		return { versionList, colorList };
+		let id = phone.id || '',
+		    version = phone.version || '',
+		    color = phone.color || '';
+
+		switch (field) {
+			case 'purchase':
+				if (phone && this.hasGoods(this.purchaseData, id, version, color)) {	
+					alert('该产品已购买');
+					return ;
+				}
+				this.purchaseData.push(phone);
+				localStorage.setItem('purchaseData', JSON.stringify(this.purchaseData));
+				alert('已成功购买该产品');		
+				window.location.href = './order.html'; //跳转order页
+				break;
+
+			case 'addToCart':
+				if (phone && this.hasGoods(this.cartData, id, version, color)) {	
+					alert('该产品已加入购物车');
+					return ;
+				}
+				this.cartData.push(phone);
+				localStorage.setItem('cartData', JSON.stringify(this.cartData));
+				alert('已成功加入购物车');
+				window.location.href = './cart.html'; //跳转cart页
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	//颜色和版本list
+	makeList (contentItem, phoneInfo, type) {
+		let phoneList = "";
+
+		switch (type) {
+			case 'version':
+				phoneInfo.forEach((item, index) => {
+					phoneList += contentItem.tpl(item.version, item.price, null, this.name, this.curV, index);
+				});
+				break;
+			case 'color':
+				phoneInfo.forEach((item, index) => {
+					phoneList += contentItem.tpl(item, null, this.pics[index][0], this.name, this.curC, index);
+				});
+				break;
+			default: 
+				break;
+		}
+
+		return phoneList;
 	}
 
 	//更改图片，颜色，版本
@@ -161,12 +225,41 @@ class DetailBoard {
 		const $pic = $('.pic'),
 		      picItem = $pic.find('.detail-pic');
 
-		const list = this.makeList(this.contentItem, this.version, this.color);
+		let versionList = '',
+		    colorList = '';
 
-		$pic.html(this.detailPic.tpl(this.phoneData, this.curC));
+		versionList = this.makeList(this.contentItem, this.version, 'version');
+		colorList = this.makeList(this.contentItem, this.color, 'color');
 		
-		this.$version.html(list.versionList);
-		this.$color.html(list.colorList);
+		$pic.html(this.detailPic.tpl(this.pics, this.curC));
+		
+		this.$version.html(versionList);
+		this.$color.html(colorList);
+	}
+
+	storageCart () {
+		let dateTime = new Date().getTime();
+
+		return {
+			id: this.id,
+			name: this.name,
+			link: location.href,
+			price: this.version[this.curV].price,
+			version: this.version[this.curV].version,
+			color: this.color[this.curC],
+			img: this.pics[this.curC][this.curC][0],
+			orderId: dateTime + tools.formatData(6),
+			purchaseTime: Date.toLocaleString(dateTime)
+		}
+	}
+
+	hasGoods (goods, id, version, color) {
+		console.log(goods)
+		return goods && goods.some((item, index) => {
+			return item.id === id && 
+						 item.version === version && 
+						 item.color === color;
+		});
 	}
 }
 
@@ -191,4 +284,25 @@ export { DetailBoard };
 			"https://i8.mifile.cn/a1/pms_1550572229.34841308.jpg"
 		]}
 	]
+*/
+/*
+id: "8"
+name: "小米6X"
+link: "http://xiaomi.jsplusplus.com/detail.html?id=8"
+price: "999"
+version: "6G+64G 移动4G"
+color: "赤焰红"
+img: "https://i8.mifile.cn/a1/pms_1524621225.83162698.jpg"
+orderId: "1582689337192543149"
+purchaseTime: "2020-02-26 11:55:37"
+
+id: "8"
+phone_name: "小米6X"
+default_price: "999"
+version_info: "[{"version":"6G+64G 移动4G","price":"999"},{"version":"6G+64G","price":"1049"}]"
+color: "["赤焰红","曜石黑"]"
+pics: "[{"0":["https://i8.mifile.cn/a1/pms_1524621225.83162698.jpg"]},{"1":["https://i8.mifile.cn/a1/pms_1524621222.66011593.jpg"]}]"
+
+orderId
+purchaseTime
 */

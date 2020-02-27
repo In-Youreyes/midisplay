@@ -10,9 +10,9 @@ class DetailPic {
 		this.name = 'detailPic';
 	}
 
-	tpl (phoneData, color) {
+	tpl (phonePics, color) {
 		let list = '',
-		    picData = $.parseJSON(phoneData.pics)[color][color];
+		    picData = phonePics[color][color];
 
 		picData.forEach((item, index) => {
 			list += tools.tplReplace(itemTpl(), {

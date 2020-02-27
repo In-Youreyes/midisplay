@@ -58,6 +58,34 @@ class Carousel {
 
 	//轮播切换
 	run (dir) {
+		// switch (dir) {
+		// 	case 'next':
+		// 		if (this.curIndex >= this.dataLen - 1) { //最后一页
+		// 			this.curIndex = 0;
+		// 		} else {
+		// 			this.curIndex ++;
+		// 		}
+		// 		break;
+		// 	case 'prev':
+		// 		if (this.curIndex <= 0) { //第一页
+		// 			this.curIndex = this.dataLen - 1;
+		// 		} else {
+		// 			this.curIndex --;
+		// 		}
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
+
+		this.setIndex(dir); //切换index
+
+		this.fadeAction(this.curIndex); //轮播样式			
+
+		Carousel.timer = setTimeout(this.run.bind(this, 'next'), this.delay); //定时轮播
+	}
+
+	//选择页
+	setIndex (dir) {
 		switch (dir) {
 			case 'next':
 				if (this.curIndex >= this.dataLen - 1) { //最后一页
@@ -66,6 +94,7 @@ class Carousel {
 					this.curIndex ++;
 				}
 				break;
+
 			case 'prev':
 				if (this.curIndex <= 0) { //第一页
 					this.curIndex = this.dataLen - 1;
@@ -73,13 +102,10 @@ class Carousel {
 					this.curIndex --;
 				}
 				break;
+
 			default:
 				break;
 		}
-
-		this.fadeAction(this.curIndex); //轮播样式			
-
-		Carousel.timer = setTimeout(this.run.bind(this, 'next'), this.delay); //定时轮播
 	}
 
 	//轮播样式

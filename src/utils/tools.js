@@ -1,6 +1,11 @@
 //tools工具函数
 
 //替换模板
+// function tplReplace (target, tpl, replaceObj) {
+// 	return target.prototype.tpl.replace(/{{(.*?)}}/g, (node, key) => {
+// 		return replaceObj[key];
+// 	});
+// }
 function tplReplace (tpl, replaceObj) {
 	return tpl.replace(/{{(.*?)}}/g, (node, key) => {
 		return replaceObj[key];
@@ -13,11 +18,16 @@ function trimSpaces (str) {
 }
 
 //获取网址URL
+// res数组匹配的结果
+	// 第一项为正则表达式匹配的字符串
+	// 第二项为'(^|&)'，第三项为([^&]*)，第四项为(&|$)，类推匹配元素
+	// index为匹配位置的索引
+	// input为源字符串
 function getUrlQueryValue (key) {
 	// (空开头 或者 &)  +  key=(非&)  +  (& 或者空结尾)
 	const reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)', 'i'), //规则
 	      res = window.location.search.substr(1).match(reg); //去除'？'，匹配数组
-	
+
 	return res != null ? decodeURIComponent(res[2]) : null; //返回匹配内容
 }
 
@@ -45,9 +55,20 @@ function throttle (callback, delay) {
 	}
 }
 
+function formatData (num) {
+	var str = '';
+
+	for (var i = 0; i < num; i++) {
+		str += parseInt(Math.random() * 10);
+	}
+	
+	return str;
+}
+
 module.exports = {
 	tplReplace,
 	trimSpaces,
 	getUrlQueryValue,
-	throttle
+	throttle,
+	formatData
 }

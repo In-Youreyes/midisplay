@@ -36,7 +36,7 @@ class ShowBoard {
 		
 		//搜索没有相关数据
 		if (len === 0) {
-			list = this.noDataTip.tpl();
+			list = this.noDataTip.tpl('没有搜到相关数据');
 
 		//搜索成功返回数据
 		} else { 

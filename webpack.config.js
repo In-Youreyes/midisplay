@@ -5,11 +5,13 @@ const autoprefixer = require('autoprefixer'); //css兼容性前缀
 // const miniCssExtractPlugin = require('mini-css-extract-plugin'); //提取css
 
 const config = {
-	mode: 'production',//development
+	mode: 'development',//development
 	entry: {
 		list: path.resolve(__dirname, './src/js/List.js'),
 		index: path.resolve(__dirname, './src/js/Index.js'),
-		detail: path.resolve(__dirname, './src/js/Detail.js')
+		detail: path.resolve(__dirname, './src/js/Detail.js'),
+		cart: path.resolve(__dirname, './src/js/Cart.js'),
+		order: path.resolve(__dirname, './src/js/Order.js')
 	},
 	output: {
 		path: path.resolve(__dirname + '/dist'),
@@ -103,6 +105,34 @@ const config = {
 			chunks: ['detail'], //排序模块
 			excludeChunks: ['node_modules'],
 			hash: true
+		}),
+		new htmlWebpackPlugin({
+			minify: { //压缩
+				removeComments: true, //去注释
+				collapseWhitespace: true //去空格
+			},
+			filename: 'cart.html',
+			template: path.resolve(__dirname, 'src/cart.html'), // 打包模板
+			title: '购物车',
+			favicon: path.resolve(__dirname, 'src/favicon.ico'),
+			chunksSortMode: 'manual', //手动排序
+			chunks: ['cart'], //排序模块
+			excludeChunks: ['node_modules'],
+			hash: true
+		}),
+		new htmlWebpackPlugin({
+			minify: { //压缩
+				removeComments: true, //去注释
+				collapseWhitespace: true //去空格
+			},
+			filename: 'order.html',
+			template: path.resolve(__dirname, 'src/order.html'), // 打包模板
+			title: '订单详情',
+			favicon: path.resolve(__dirname, 'src/favicon.ico'),
+			chunksSortMode: 'manual', //手动排序
+			chunks: ['order'], //排序模块
+			excludeChunks: ['node_modules'],
+			hash: true
 		})
 		// ,new miniCssExtractPlugin({
 		// 	filename: 'css/[name].css'
@@ -113,7 +143,8 @@ const config = {
   		ignored: /node_modules/ //忽略监听
   	},
 		host: 'localhost', //主机
-		port: 3400, //端口
+		port: 80, //端口
+		disableHostCheck: true // 转发
 	}
 }
 

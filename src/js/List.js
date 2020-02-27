@@ -1,7 +1,7 @@
 import { App } from './App';
 
 import { Header } from '../components/header';
-import { ShowBoard} from '../components/show_board';
+import { ShowBoard } from '../components/show_board';
 import { Footer } from '../components/footer';
 import { Tab } from '../components/tab';
 
@@ -18,7 +18,7 @@ class List extends App {
 		this.keyword = tools.getUrlQueryValue('keyword');
 	}
 
-	async render() {
+	async render () {
 
 		//是否重定向url
 		this.isRefreshUrl();
