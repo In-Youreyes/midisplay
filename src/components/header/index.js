@@ -37,17 +37,25 @@ class Header {
 
 	bindEvent () {
 		const $nav = $('.J_nav'), //获取nav
-		      $searchBtn = $('.J_searchBtn'); //获取searchBtn
+		      $searchBtn = $('.J_searchBtn'), //获取searchBtn
+		      $navMenu = $nav.find('.J_navMenu');
 
 		//nav nav-item代理绑定事件
 		$nav.on('mouseenter', '.nav-item',
-			{ 
-				//通过jquery传入到e.data中			
-				phoneDatas: this.phoneDatas, //手机信息
-				oNav: this.nav //nav实例
+			{ 		
+				phoneDatas: this.phoneDatas,
+				$nav: $nav
 			},
-			this.nav.navMouseEnter //nav实例函数
+			this.nav.navItemEnter.bind(this.nav)
 		);
+
+		//整体移入/移出
+		$nav.on('mouseenter', this.nav.docMouseMove.bind(this.nav, true));
+		$nav.on('mouseleave', this.nav.docMouseMove.bind(this.nav, false));
+
+		//子菜单移入/移出
+		$navMenu.on('mouseenter', this.nav.changeMenu.bind(this.nav, true));
+		$navMenu.on('mouseleave', this.nav.changeMenu.bind(this.nav, false));
 
 		//search button绑定事件
 		$searchBtn.on('click', this.search.searchPhone);

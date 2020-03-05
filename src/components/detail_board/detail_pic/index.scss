@@ -1,43 +1,69 @@
 .pic {
-	 position: relative;
-   width: 560px;
-   height: 560px;
+	position: relative;
+	width: 560px;
+	height: 560px;
 
-   .detail-pic {
-   		position: absolute;
-   		display: none;
+	.detail-pic {
+		position: absolute;
+		display: none;
 
-   		&.current {
-   			display: block;
-   		}
-   }
-
-   .pic-control {
-			position: absolute;
-			top: 50%;
-			z-index: 1;
-			width: 24px;
-			height: 40px;
-			margin-top: -20px;
-			background-color: rgba(0, 0, 0, 0);
-			background-repeat: no-repeat;
-			background-position: center center;
-			background-size: 15px 15px;
-			cursor: pointer;
-			transition: background-color .2s;
-
-			&:hover {
-				background-color: rgba(0, 0, 0, .2);
-			}
-
-			&:first-of-type {
-				left: 0;
-				background-image: url(../../../icons/prev.png);
-			}
-
-			&:last-child {
-				right: 0;
-				background-image: url(../../../icons/next.png);
-			}
+		&.current {
+			display: block;
 		}
+	}
+
+	.pic-control {
+		position: absolute;
+		top: 50%;
+		z-index: 1;
+		width: 24px;
+		height: 40px;
+		margin-top: -20px;
+		background-color: rgba(0, 0, 0, .2);
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: 15px 15px;
+		cursor: pointer;
+		transition: background-color .2s;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, .5);
+		}
+
+		&:first-of-type {
+			left: -24px;
+			background-image: url(../../../icons/prev.png);
+		}
+
+		&:nth-of-type(2) {
+			right: -24px;
+			background-image: url(../../../icons/next.png);
+		}
+	}
+
+	.mag {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 175px;
+		height: 175px;
+		z-index: 2;
+		overflow: hidden;
+		box-shadow: 0 0 5px #eee;
+		background-color: #fff;
+
+		&.show {
+			display: block;
+			transform: scale(1.5);
+		}
+
+		.mag-img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 560px;
+			height: 560px;
+		}
+	}
 }

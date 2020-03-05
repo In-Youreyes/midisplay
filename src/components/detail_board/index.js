@@ -24,6 +24,8 @@ class DetailBoard {
 		//购物车DOM
 		this.$addToCart = null;
 		this.$purChase = null;
+		//图片DOM
+		this.$magImg = null;
 
 		this.id = '';
 		//颜色和版本的数据
@@ -83,14 +85,34 @@ class DetailBoard {
 	bindEvent () {
 		//点击选择版本和颜色
 		const $container = $('.detail-board'),
-		      $pic = $container.find('.pic');
+		      $pic = $container.find('.pic'),
+		      $magWrap = $pic.find('.mag'),
+		      $magImg = $pic.find('.mag-img');
 
     this.$version = $container.find('.J_version');
     this.$color = $container.find('.J_color');
     this.$cart = $container.find('.J_btnGroup');
 
+    this.$magImg = $magImg;
+
+    //传参
+		this.detailPic.init({
+			$pic,
+			$magWrap,
+			$magImg,
+			picX: $pic.offset().left,
+			picY: $pic.offset().top,
+			magW: $magWrap.width(),
+			magH: $magWrap.height()
+		});
     //点击图片
     $pic.on('click', { $pic }, $.proxy(this.picClick, this));
+    //移入移出图片
+    $pic.on('mouseenter', $.proxy(this.detailPic.picEnter, this.detailPic));
+
+    $pic.on('mouseleave', $.proxy(this.detailPic.picOut, this.detailPic));
+    //切换时在pic内移动
+    $pic.on('mouseenter', '.detail-pic', $.proxy(this.detailPic.picChangeMove, this.detailPic));
 
 		//点击选择版本
 		this.$version.on('click', '.content-item','version', $.proxy(this.changeClick, this));
@@ -100,7 +122,7 @@ class DetailBoard {
 		this.$cart.on('click', '.detail-btn', $.proxy(this.cartClick, this));
 	}
 
-	//点击图片
+	//点击切换图片
 	picClick (e) {
 		const tar = e.target,
 		      className = tools.trimSpaces(tar.className),
@@ -136,8 +158,12 @@ class DetailBoard {
 
 	//切换图片显示
 	changePic (picItem, num) {
+		let cur = this.curC;
+		//详情图
 		picItem.eq(num).addClass('current')
 		   		 .siblings().removeClass('current');
+		//放大镜图
+		this.$magImg.attr("src", this.pics[cur][cur][num]);
 	}
 
 	//切换版本

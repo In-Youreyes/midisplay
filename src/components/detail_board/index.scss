@@ -12,8 +12,10 @@
 		padding: 32px 0;
 
 		.left {
+      position: relative;
 			width: 606px;
-		}
+		  z-index: 1;
+    }
 
 		.right {
 			position: absolute;
