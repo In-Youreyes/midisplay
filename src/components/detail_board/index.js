@@ -105,11 +105,11 @@ class DetailBoard {
 			magW: $magWrap.width(),
 			magH: $magWrap.height()
 		});
+		
     //点击图片
     $pic.on('click', { $pic }, $.proxy(this.picClick, this));
-    //移入移出图片
+    //移入/移出图片
     $pic.on('mouseenter', $.proxy(this.detailPic.picEnter, this.detailPic));
-
     $pic.on('mouseleave', $.proxy(this.detailPic.picOut, this.detailPic));
     //切换时在pic内移动
     $pic.on('mouseenter', '.detail-pic', $.proxy(this.detailPic.picChangeMove, this.detailPic));

@@ -37,6 +37,7 @@ class DetailPic {
 		});
 	}
 
+	//初始
 	init (opt) {
 		this.$magWrap = opt.$magWrap;
 		this.$magImg = opt.$magImg;
