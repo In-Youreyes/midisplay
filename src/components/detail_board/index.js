@@ -124,6 +124,8 @@ class DetailBoard {
     $pic.on('mouseleave', $.proxy(this.detailPic.picOut, this.detailPic));
     //切换时在pic内移动
     $pic.on('mouseenter', '.detail-pic', $.proxy(this.detailPic.picChangeMove, this.detailPic));
+		//改变宽高
+		$(window).on('resize', { $pic }, $.proxy(tools.throttle(this.detailPic.getPicXY), this.detailPic));
 	}
 
 	//点击切换图片

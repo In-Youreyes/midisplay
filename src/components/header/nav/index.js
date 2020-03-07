@@ -65,7 +65,7 @@ class Nav {
 		if (isBind) {
 			$(document).on('mousemove', {ctx: this}, this.mouseMove);
 		} else {
-			this.$nav.find('.nav-item').removeClass('active');
+			$('.J_nav').find('.nav-item').removeClass('active');
 			$(document).off('mousemove', this.mouseMove);
 		}
 	}
