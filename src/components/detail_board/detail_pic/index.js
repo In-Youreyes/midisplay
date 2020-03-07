@@ -78,7 +78,6 @@ class DetailPic {
 	mouseMove (e) {
 		const ctx = e.data.ctx;
 		ctx.showMag(ctx.getXY(e).X, ctx.getXY(e).Y, ctx.getXY(e).mouseX, ctx.getXY(e).mouseY);
-		console.log( ctx.picX, ctx.picY)
 	}
 
 	//放大镜显示
