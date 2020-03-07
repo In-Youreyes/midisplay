@@ -89,13 +89,13 @@ class DetailBoard {
 		      $magWrap = $pic.find('.mag'),
 		      $magImg = $pic.find('.mag-img');
 
-    this.$version = $container.find('.J_version');
-    this.$color = $container.find('.J_color');
-    this.$cart = $container.find('.J_btnGroup');
+		this.$version = $container.find('.J_version');
+		this.$color = $container.find('.J_color');
+		this.$cart = $container.find('.J_btnGroup');
 
-    this.$magImg = $magImg;
+		this.$magImg = $magImg;
 
-    //传参
+		//传参
 		this.detailPic.init({
 			$pic,
 			$magWrap,
