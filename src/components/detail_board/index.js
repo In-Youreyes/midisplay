@@ -174,7 +174,7 @@ class DetailBoard {
 
 	//切换版本
 	changeClick (e) {
-		const tar = e.target,
+		const tar = e.currentTarget, //获取content-item
 		      $tar = $(tar),
 		      cur = e.data,
 		      $pic = $('.pic');
