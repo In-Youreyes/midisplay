@@ -105,21 +105,25 @@ class DetailBoard {
 			magW: $magWrap.width(),
 			magH: $magWrap.height()
 		});
-		
-    //点击图片
+		//绑定
+		this.bindDetailEvent($pic);
+    
+		//点击选择版本
+		this.$version.on('click', '.content-item', 'version', $.proxy(this.changeClick, this));
+		// 点击选择颜色
+		this.$color.on('click', '.content-item', 'color', $.proxy(this.changeClick, this));
+		// 点击加入购物车/点击购买
+		this.$cart.on('click', '.detail-btn', $.proxy(this.cartClick, this));
+	}
+
+	bindDetailEvent ($pic) {
+		//点击图片
     $pic.on('click', { $pic }, $.proxy(this.picClick, this));
     //移入/移出图片
     $pic.on('mouseenter', $.proxy(this.detailPic.picEnter, this.detailPic));
     $pic.on('mouseleave', $.proxy(this.detailPic.picOut, this.detailPic));
     //切换时在pic内移动
     $pic.on('mouseenter', '.detail-pic', $.proxy(this.detailPic.picChangeMove, this.detailPic));
-
-		//点击选择版本
-		this.$version.on('click', '.content-item','version', $.proxy(this.changeClick, this));
-		// 点击选择颜色
-		this.$color.on('click', '.content-item', 'color', $.proxy(this.changeClick, this));
-		// 点击加入购物车/点击购买
-		this.$cart.on('click', '.detail-btn', $.proxy(this.cartClick, this));
 	}
 
 	//点击切换图片
@@ -170,7 +174,8 @@ class DetailBoard {
 	changeClick (e) {
 		const tar = e.target,
 		      $tar = $(tar),
-		      cur = e.data;
+		      cur = e.data,
+		      $pic = $('.pic');
 		
 		switch (cur) {
 			case 'version':
@@ -183,6 +188,25 @@ class DetailBoard {
 
 		this.picNum = 0; //更换了图片，从第一张开始
 		this.appendList();
+
+		//appendList后获取dom
+		let $magWrap = $pic.find('.mag'),
+		    $magImg = $pic.find('.mag-img');
+
+		//放大镜图
+		this.$magImg.attr("src", this.pics[0][0][0]);
+
+		//重新渲染后重新绑定
+		this.detailPic.init({
+			$pic,
+			$magWrap,
+			$magImg,
+			picX: $pic.offset().left,
+			picY: $pic.offset().top,
+			magW: $magWrap.width(),
+			magH: $magWrap.height()
+		});
+		this.bindDetailEvent($pic);
 	}
 
 	//添加购物车/购买
