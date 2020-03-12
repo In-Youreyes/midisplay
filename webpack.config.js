@@ -71,7 +71,7 @@ const config = {
 			},
 			filename: 'index.html',
 			template: path.resolve(__dirname, 'src/index.html'), // 打包模板
-			title: '小米手机官网',
+			title: '米机微展',
 			favicon: path.resolve(__dirname, 'src/favicon.ico'),
 			chunksSortMode: 'manual', //手动排序
 			chunks: ['index'], //排序模块 

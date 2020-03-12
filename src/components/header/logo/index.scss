@@ -4,17 +4,17 @@
 	width: 55px;
 	height: 55px;
 	margin-top: 22px;
-	background-color: #ff6700;
+	border-radius: 50%;
+	background-color: #25a4bb;
 	overflow: hidden;
 
 	.logo-lk {
 		display: block;
 		position: absolute;
 		top: 0;
-		left: -55px;
+		left: 0;
 		width: 110px;
 		height: 55px;
-		transition: left .3s;
 
 		&::before,
 		&::after {
@@ -24,20 +24,32 @@
 			display: block;
 			width: 55px;
 			height: 55px;
+			transition: all .3s;
+			transform: rotate(0deg);
 		}
 
 		&::before {
 			left: 0;
+			opacity: 0;
 			background: url(images/logo_2.png) center center;
 		}
 
 		&::after {
-			left: 55px;
+			left: 0;		
+			opacity: 1;
 			background: url(images/logo_1.png) center center;
 		}
 
-		&:hover {
-			left: 0;
+		&:hover {			
+			&::before {
+				opacity: 1;
+				transform: rotate(720deg);
+			}
+
+			&::after {
+				opacity: 0;
+				transform: rotate(720deg);
+			}
 		}
 	}
 }

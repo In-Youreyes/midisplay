@@ -1,3 +1,3 @@
 <footer class="footer cover">
-	<h3>&copy; mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2017]1530-131号</h3>
+	<h3>米机微展&nbsp;&nbsp;&nbsp;&nbsp;&copy;<a class="desc" href="http://www.ccxiangsi.com">此处最相思</a>&nbsp;<a href="http://www.beian.miit.gov.cn/">皖ICP备20002776号</a></h3>
 </footer>

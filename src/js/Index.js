@@ -22,11 +22,11 @@ class Index extends App {
 		//轮播组件
 		new Carousel(this.$app, this.cache.swiperDatas).init();
 		//列表组件
-		new BoardTitle(this.$app, '手机上新').init();
+		new BoardTitle(this.$app, '——新款手机——').init();
 		new ShowBoard(this.$app, this.filterDatas('new')).init(); //new,valueable,recom
-		new BoardTitle(this.$app, '超值手机').init();
+		new BoardTitle(this.$app, '——超值手机——').init();
 		new ShowBoard(this.$app, this.filterDatas('valueable')).init();
-		new BoardTitle(this.$app, '官方推荐').init();
+		new BoardTitle(this.$app, '——推荐手机——').init();
 		new ShowBoard(this.$app, this.filterDatas('recom')).init();
 		//底部组件
 		new Footer(this.$app).init();

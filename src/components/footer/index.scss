@@ -3,4 +3,12 @@
 	text-align: center;
   line-height: 100px;
   color: #999;
+
+  a {
+  	color: #999;
+  
+		&.desc {	
+	  	text-decoration: underline;
+		}
+  }
 }
